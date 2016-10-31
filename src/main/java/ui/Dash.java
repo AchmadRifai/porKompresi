@@ -5,6 +5,13 @@
  */
 package ui;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
+
 /**
  *
  * @author ai
@@ -29,10 +36,9 @@ public class Dash extends javax.swing.JFrame {
 
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        j = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
-        jInternalFrame1 = new javax.swing.JInternalFrame();
-        jInternalFrame2 = new javax.swing.JInternalFrame();
+        gawe = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("POR ZIPPER");
@@ -40,6 +46,9 @@ public class Dash extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -49,41 +58,32 @@ public class Dash extends javax.swing.JFrame {
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jButton1);
 
-        jDesktopPane1.setLayout(new java.awt.GridBagLayout());
+        j.setText("JALAN");
+        j.setEnabled(false);
+        j.setFocusable(false);
+        j.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        j.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(j);
 
-        jInternalFrame1.setVisible(true);
-
-        javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
-        jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
-        jInternalFrame1Layout.setHorizontalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        javax.swing.GroupLayout gaweLayout = new javax.swing.GroupLayout(gawe);
+        gawe.setLayout(gaweLayout);
+        gaweLayout.setHorizontalGroup(
+            gaweLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 373, Short.MAX_VALUE)
         );
-        jInternalFrame1Layout.setVerticalGroup(
-            jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jDesktopPane1.add(jInternalFrame1, new java.awt.GridBagConstraints());
-
-        jInternalFrame2.setVisible(true);
-
-        javax.swing.GroupLayout jInternalFrame2Layout = new javax.swing.GroupLayout(jInternalFrame2.getContentPane());
-        jInternalFrame2.getContentPane().setLayout(jInternalFrame2Layout);
-        jInternalFrame2Layout.setHorizontalGroup(
-            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jInternalFrame2Layout.setVerticalGroup(
-            jInternalFrame2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        gaweLayout.setVerticalGroup(
+            gaweLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 242, Short.MAX_VALUE)
         );
 
-        jDesktopPane1.add(jInternalFrame2, new java.awt.GridBagConstraints());
-
-        jScrollPane1.setViewportView(jDesktopPane1);
+        jScrollPane1.setViewportView(gawe);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -110,14 +110,36 @@ public class Dash extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
+        util.Work.f.delete();
     }//GEN-LAST:event_formWindowClosing
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new ui.AddJobs(this, rootPaneCheckingEnabled).setVisible(true);
+        try {
+            refresh();
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(Dash.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(!util.Work.f.exists())try {
+            util.Work.initFile();
+            refresh();
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
+            Logger.getLogger(Dash.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowOpened
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane gawe;
+    private javax.swing.JButton j;
     private javax.swing.JButton jButton1;
-    private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JInternalFrame jInternalFrame1;
-    private javax.swing.JInternalFrame jInternalFrame2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
+
+    private void refresh() throws ParserConfigurationException, SAXException, IOException {
+        for(beans.Jobs j:util.Work.getJobs())gawe.add(new ui.inter.Jobs(j));
+    }
 }
