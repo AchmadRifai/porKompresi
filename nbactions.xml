@@ -8,6 +8,7 @@
             <goals>
                 <goal>clean</goal>
                 <goal>process-classes</goal>
+                <goal>install</goal>
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
