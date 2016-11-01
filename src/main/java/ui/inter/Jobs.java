@@ -105,7 +105,9 @@ private Thread t;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+@SuppressWarnings("CallToThreadStopSuspendOrResumeManager")
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        if(t!=null)t.stop();
         java.io.File f=new java.io.File(ke.getText());
         if(f.exists())f.delete();
     }//GEN-LAST:event_formInternalFrameClosing
@@ -123,6 +125,7 @@ private Thread t;
         asal.setText(j.getAsal());
         ke.setText(j.getKe());
         this.setTitle(judule());
+        this.setVisible(true);
     }
 
     private String judule() {
@@ -148,6 +151,7 @@ private Thread t;
     private void laksana() throws IOException {
         if(beans.Jobs.KOMPRES==j.getMode())kompres();
         else dekompres();
+        javax.swing.JOptionPane.showMessageDialog(rootPane, title+" berhasil");
     }
 
 @SuppressWarnings("UnnecessaryContinue")
@@ -158,22 +162,31 @@ private Thread t;
         for(byte b:java.nio.file.Files.readAllBytes(f.toPath())){
             if(d!=null){
                 if(b!=d.getB()||d.isPenuh()){
-                    util.Work.simpanBit(d,ke.getText());
+                    util.Work.simpanBit(d, ke.getText());
                     d=new beans.DataRL(b);
                 }else d.add();
             }else d=new beans.DataRL(b);
             p++;
             progres(s,p);
-        }
+        }util.Work.simpanBit(d, ke.getText());
     }
 
-    private void dekompres() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void dekompres() throws IOException {
+        java.io.File f=new java.io.File(asal.getText());
+        long s=f.length(),p=0;
+        java.io.FileInputStream i=new java.io.FileInputStream(f);
+        byte[]b=new byte[2];
+        int r;
+        while((r=i.read(b))!=-1){
+            util.Work.kembali(b,ke.getText());
+            p+=2;
+            progres(s,p);
+        }i.close();
     }
 
     private void progres(long s, long p) {
         long c=100*p;
-        int i=(int) (c/p);
+        int i=(int) (c/s);
         lakune.setValue(i);
     }
 }

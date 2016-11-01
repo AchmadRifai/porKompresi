@@ -47,13 +47,43 @@ public class Work {
 
     public static void simpanBit(DataRL d, String ke) throws IOException {
         java.io.File t=new java.io.File(ke);
-        java.io.FileOutputStream o=new java.io.FileOutputStream(t);
+        java.io.FileOutputStream o=new java.io.FileOutputStream(t,t.exists());
         o.write(oleh2(d));
         o.close();
     }
 
     private static byte[] oleh2(DataRL d) {
         byte[]b=new byte[]{d.getB(),(byte)d.getC()};
+        return b;
+    }
+
+    public static void addJobs(Jobs j) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+        org.w3c.dom.Document d=javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
+        org.w3c.dom.Element root=(org.w3c.dom.Element) d.getElementsByTagName("por").item(0),e=d.createElement("jobs");
+        e.setAttribute("mode", ""+j.getMode());
+        e.setAttribute("asal", j.getAsal());
+        e.setAttribute("ke", j.getKe());
+        root.appendChild(e);
+        save(d);
+    }
+
+    public static void kembali(byte[] b, String ke) throws IOException {
+        java.io.File t=new java.io.File(ke);
+        beans.DataRL d=getDataRL(b);
+        java.io.FileOutputStream o=new java.io.FileOutputStream(t,t.exists());
+        o.write(balek(d));
+        o.close();
+    }
+
+    private static DataRL getDataRL(byte[] b) {
+        beans.DataRL d=new beans.DataRL(b[0]);
+        d.setC(b[1]&0xFF);
+        return d;
+    }
+
+    private static byte[] balek(DataRL d) {
+        byte[]b=new byte[d.getC()];
+        for(int x=0;x<d.getC();x++)b[x]=d.getB();
         return b;
     }
 }

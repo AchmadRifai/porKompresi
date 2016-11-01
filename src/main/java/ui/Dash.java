@@ -70,19 +70,14 @@ public class Dash extends javax.swing.JFrame {
         j.setFocusable(false);
         j.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         j.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        j.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jActionPerformed(evt);
+            }
+        });
         jToolBar1.add(j);
 
-        javax.swing.GroupLayout gaweLayout = new javax.swing.GroupLayout(gawe);
-        gawe.setLayout(gaweLayout);
-        gaweLayout.setHorizontalGroup(
-            gaweLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 373, Short.MAX_VALUE)
-        );
-        gaweLayout.setVerticalGroup(
-            gaweLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 242, Short.MAX_VALUE)
-        );
-
+        gawe.setLayout(new java.awt.GridBagLayout());
         jScrollPane1.setViewportView(gawe);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -131,6 +126,13 @@ public class Dash extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowOpened
 
+    private void jActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActionPerformed
+        for(javax.swing.JInternalFrame i:gawe.getAllFrames()){
+            ui.inter.Jobs g=(ui.inter.Jobs) i;
+            g.jalan();
+        }jButton1.setEnabled(false);
+    }//GEN-LAST:event_jActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane gawe;
     private javax.swing.JButton j;
@@ -140,6 +142,22 @@ public class Dash extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void refresh() throws ParserConfigurationException, SAXException, IOException {
-        for(beans.Jobs j:util.Work.getJobs())gawe.add(new ui.inter.Jobs(j));
+        for(javax.swing.JInternalFrame i:gawe.getAllFrames())gawe.remove(i);
+        int x=0,y=0;
+        for(beans.Jobs j:util.Work.getJobs()){
+            if(x==0&&y==0){
+                gawe.add(new ui.inter.Jobs(j), new java.awt.GridBagConstraints());
+                continue;
+            }java.awt.GridBagConstraints gbc=new java.awt.GridBagConstraints();
+            gbc.fill=java.awt.GridBagConstraints.BASELINE_LEADING;
+            gbc.gridx=x;
+            gbc.gridy=y;
+            gawe.add(new ui.inter.Jobs(j), gbc);
+            x++;
+            if(x==3){
+                x=0;
+                y++;
+            }System.out.println("x= "+x+" dan y="+y);
+        }j.setEnabled(0<gawe.getAllFrames().length);
     }
 }
