@@ -40,6 +40,9 @@ private Thread t;
         asal = new javax.swing.JTextField();
         ke = new javax.swing.JTextField();
         lakune = new javax.swing.JProgressBar();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        in = new javax.swing.JTabbedPane();
+        out = new javax.swing.JTabbedPane();
 
         setClosable(true);
         setIconifiable(true);
@@ -58,6 +61,7 @@ private Thread t;
             public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
             }
         });
 
@@ -84,6 +88,9 @@ private Thread t;
             }
         });
 
+        jTabbedPane1.addTab("IN", in);
+        jTabbedPane1.addTab("OUT", out);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,7 +106,8 @@ private Thread t;
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(ke)
-                            .addComponent(asal))))
+                            .addComponent(asal)))
+                    .addComponent(jTabbedPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -115,6 +123,8 @@ private Thread t;
                     .addComponent(ke, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lakune, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -140,16 +150,34 @@ private Thread t;
 
     private void asalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asalMouseClicked
         java.io.File f=new java.io.File(asal.getText());
-        if(f.exists())new ui.Biner((Frame) this.getParent(),true,f.getAbsolutePath()).setVisible(true);
+        if(f.exists())new ui.Biner((Frame) this.getDesktopPane().getParent(),true,f.getAbsolutePath()).setVisible(true);
     }//GEN-LAST:event_asalMouseClicked
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                in();
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                out();
+            }
+        }).start();
+    }//GEN-LAST:event_formInternalFrameOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField asal;
+    private javax.swing.JTabbedPane in;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField ke;
     private javax.swing.JProgressBar lakune;
+    private javax.swing.JTabbedPane out;
     // End of variables declaration//GEN-END:variables
 
     private void inisial() {
@@ -219,5 +247,13 @@ private Thread t;
         long c=100*p;
         int i=(int) (c/s);
         lakune.setValue(i);
+    }
+
+    private void in() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void out() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
