@@ -16,8 +16,8 @@
                         <goals>
                             <goal>clean</goal>
                         </goals>
-                        <id>clean</id>
-                        <phase>initialize</phase>
+                        <id>auto-clean</id>
+                        <phase>generate-sources</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -42,6 +42,8 @@
                 </dependencies>
                 <configuration>
                     <compilerId>eclipse</compilerId>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
