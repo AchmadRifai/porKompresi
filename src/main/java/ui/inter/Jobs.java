@@ -5,6 +5,7 @@
  */
 package ui.inter;
 
+import java.awt.Frame;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -65,8 +66,23 @@ private Thread t;
         jLabel2.setText("Target");
 
         asal.setEditable(false);
+        asal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                asalMouseClicked(evt);
+            }
+        });
+        asal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asalActionPerformed(evt);
+            }
+        });
 
         ke.setEditable(false);
+        ke.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                keActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,6 +127,21 @@ private Thread t;
         java.io.File f=new java.io.File(ke.getText());
         if(f.exists())f.delete();
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void asalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asalActionPerformed
+        java.io.File f=new java.io.File(asal.getText());
+        if(f.exists())new ui.Biner((Frame) this.getParent(),true,f.getAbsolutePath()).setVisible(true);
+    }//GEN-LAST:event_asalActionPerformed
+
+    private void keActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_keActionPerformed
+        java.io.File f=new java.io.File(ke.getText());
+        if(f.exists())new ui.Biner((Frame) this.getParent(),true,f.getAbsolutePath()).setVisible(true);
+    }//GEN-LAST:event_keActionPerformed
+
+    private void asalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_asalMouseClicked
+        java.io.File f=new java.io.File(asal.getText());
+        if(f.exists())new ui.Biner((Frame) this.getParent(),true,f.getAbsolutePath()).setVisible(true);
+    }//GEN-LAST:event_asalMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
