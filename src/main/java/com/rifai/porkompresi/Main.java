@@ -20,10 +20,11 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            javax.swing.UIManager.setLookAndFeel(new com.seaglasslookandfeel.SeaGlassLookAndFeel());
+            javax.swing.UIManager.setLookAndFeel(new com.jtattoo.plaf.mint.MintLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }java.awt.EventQueue.invokeLater(new Runnable() {
+        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new ui.Dash().setVisible(true);

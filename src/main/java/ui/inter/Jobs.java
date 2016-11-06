@@ -6,9 +6,12 @@
 package ui.inter;
 
 import java.awt.Frame;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -124,8 +127,8 @@ private Thread t;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lakune, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -157,13 +160,21 @@ private Thread t;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                in();
+                try {
+                    in();
+                } catch (IOException ex) {
+                    Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }).start();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                out();
+                try {
+                    out();
+                } catch (IOException ex) {
+                    Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }).start();
     }//GEN-LAST:event_formInternalFrameOpened
@@ -210,6 +221,16 @@ private Thread t;
     private void laksana() throws IOException {
         if(beans.Jobs.KOMPRES==j.getMode())kompres();
         else dekompres();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    out();
+                } catch (IOException ex) {
+                    Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }).start();
         javax.swing.JOptionPane.showMessageDialog(rootPane, title+" berhasil");
     }
 
@@ -249,11 +270,78 @@ private Thread t;
         lakune.setValue(i);
     }
 
-    private void in() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void in() throws IOException {
+        java.io.File f=new java.io.File(asal.getText());
+        if(f.exists())lanjutIn(f);
     }
 
-    private void out() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void out() throws IOException {
+        java.io.File f=new java.io.File(ke.getText());
+        if(f.exists())lanjutOut(f);
+    }
+
+    private void lanjutIn(File f) throws IOException {
+        javax.swing.JTextArea t=null;
+        int x=1,y=0;
+        for(byte b:java.nio.file.Files.readAllBytes(f.toPath())){
+            if(t==null){
+                t=getTextSe(x);
+                x++;
+            }else if(y==4000){
+                t=getTextSe(x);
+                x++;
+                y=0;
+            }t.setText(t.getText()+b+" ");
+            y++;
+        }
+    }
+
+@SuppressWarnings("null")
+    private void lanjutOut(File f) throws IOException {
+        javax.swing.JTextArea t=null;
+        int x=1,y=0;
+        for(byte b:java.nio.file.Files.readAllBytes(f.toPath())){
+            if(t==null){
+                t=getTextSex(x);
+                x++;
+            }else if(y==4000){
+                t=getTextSex(x);
+                x++;
+                y=0;
+            }t.setText(t.getText()+b+" ");
+            y++;
+        }
+    }
+
+    private void initSekOut(JScrollPane scrl, JTextArea t, int x) {
+        scrl=new javax.swing.JScrollPane();
+        t=new javax.swing.JTextArea("");
+        scrl.setViewportView(t);
+        t.setEditable(false);
+        t.setLineWrap(true);
+        t.setWrapStyleWord(true);
+        out.add(""+x, scrl);
+    }
+
+    private javax.swing.JTextArea getTextSe(int x) {
+        javax.swing.JTextArea t=new javax.swing.JTextArea("");
+        t.setEditable(false);
+        t.setLineWrap(true);
+        t.setWrapStyleWord(true);
+        javax.swing.JScrollPane scrl=new javax.swing.JScrollPane();
+        scrl.setViewportView(t);
+        in.add(""+x, scrl);
+        return t;
+    }
+
+    private javax.swing.JTextArea getTextSex(int x) {
+        javax.swing.JTextArea t=new javax.swing.JTextArea("");
+        t.setEditable(false);
+        t.setLineWrap(true);
+        t.setWrapStyleWord(true);
+        javax.swing.JScrollPane scrl=new javax.swing.JScrollPane();
+        scrl.setViewportView(t);
+        out.add(""+x, scrl);
+        return t;
     }
 }

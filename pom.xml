@@ -99,9 +99,9 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>com.seaglasslookandfeel</groupId>
-            <artifactId>seaglasslookandfeel</artifactId>
-            <version>0.2.1</version>
+            <groupId>com.jtattoo</groupId>
+            <artifactId>JTattoo</artifactId>
+            <version>1.6.11</version>
         </dependency>
     </dependencies>
     <properties>
