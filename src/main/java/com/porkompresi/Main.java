@@ -3,11 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.rifai.porkompresi;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UnsupportedLookAndFeelException;
+package com.porkompresi;
 
 /**
  *
@@ -19,12 +15,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            javax.swing.UIManager.setLookAndFeel(new com.jtattoo.plaf.mint.MintLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(new Runnable() {
+//javax.swing.UIManager.setLookAndFeel(new com.jtattoo.plaf.mint.MintLookAndFeel());
+                java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new ui.Dash().setVisible(true);

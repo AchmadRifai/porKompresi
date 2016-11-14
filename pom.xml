@@ -92,17 +92,18 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.rifai.porkompresi.Main</mainClass>
+                    <mainClass>com.porkompresi.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>com.jtattoo</groupId>
-            <artifactId>JTattoo</artifactId>
-            <version>1.6.11</version>
-        </dependency>
+<dependency>
+    <groupId>com.seaglasslookandfeel</groupId>
+    <artifactId>seaglasslookandfeel</artifactId>
+    <version>0.2.1</version>
+</dependency>
+
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
