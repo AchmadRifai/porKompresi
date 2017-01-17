@@ -42,19 +42,12 @@ public class Work {
         javax.xml.transform.stream.StreamResult sr=new javax.xml.transform.stream.StreamResult(f);
         javax.xml.transform.dom.DOMSource ds=new javax.xml.transform.dom.DOMSource(d);
         javax.xml.transform.Transformer t=javax.xml.transform.TransformerFactory.newInstance().newTransformer();
+        t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+        t.setOutputProperty(javax.xml.transform.OutputKeys.METHOD, "xml");
+        t.setOutputProperty(javax.xml.transform.OutputKeys.OMIT_XML_DECLARATION, "no");
+        t.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
+        t.setOutputProperty(javax.xml.transform.OutputKeys.ENCODING, "utf-8");
         t.transform(ds, sr);
-    }
-
-    public static void simpanBit(DataRL d, String ke) throws IOException {
-        java.io.File t=new java.io.File(ke);
-        java.io.FileOutputStream o=new java.io.FileOutputStream(t,t.exists());
-        o.write(oleh2(d));
-        o.close();
-    }
-
-    private static byte[] oleh2(DataRL d) {
-        byte[]b=new byte[]{d.getB(),(byte)d.getC()};
-        return b;
     }
 
     public static void addJobs(Jobs j) throws ParserConfigurationException, SAXException, IOException, TransformerException {
@@ -67,23 +60,70 @@ public class Work {
         save(d);
     }
 
-    public static void kembali(byte[] b, String ke) throws IOException {
-        java.io.File t=new java.io.File(ke);
-        beans.DataRL d=getDataRL(b);
-        java.io.FileOutputStream o=new java.io.FileOutputStream(t,t.exists());
-        o.write(balek(d));
+    public static void saveComp(DataRL d, String text) throws IOException {
+        java.io.File f=new java.io.File(text);
+        java.io.FileOutputStream o=new java.io.FileOutputStream(f,f.exists());
+        o.write(isine1(d));
         o.close();
     }
 
-    private static DataRL getDataRL(byte[] b) {
-        beans.DataRL d=new beans.DataRL(b[0]);
-        d.setC(b[1]&0xFF);
-        return d;
+    private static byte[] isine1(DataRL d) {
+        byte[]b=null;
+        if(d.oleh()){
+            b=new byte[4];
+            b[0]=0;
+            b[3]=0;
+            b[1]=(byte) ((byte) d.getC()-3);
+            b[2]=d.getB();
+        }else{
+            b=new byte[d.getC()];
+            for(int x=0;x<d.getC();x++)b[x]=d.getB();
+        }return b;
     }
 
-    private static byte[] balek(DataRL d) {
-        byte[]b=new byte[d.getC()];
-        for(int x=0;x<d.getC();x++)b[x]=d.getB();
+    public static void Decompres(List<Byte> l, String text) throws IOException {
+        java.io.File f=new java.io.File(text);
+        java.io.FileOutputStream o=new java.io.FileOutputStream(f,f.exists());
+        byte[]b;
+        if(avaiable(l)){
+            b=kabeh(l);
+            l.clear();
+        }else{
+            b=sitok(l);
+            l.remove(0);
+        }o.write(b);
+        o.close();
+    }
+
+    public static void lastCompres(List<Byte> l, String text) throws IOException {
+        java.io.File f=new java.io.File(text);
+        java.io.FileOutputStream o=new java.io.FileOutputStream(f,f.exists());
+        byte[]b;
+        if(avaiable(l))b=kabeh(l);
+        else b=yo(l);
+        o.write(b);
+        o.close();
+    }
+
+    private static boolean avaiable(List<Byte> l) {
+        boolean b=4==l.size();
+        if(b)return 0==l.get(0)&&0==l.get(3);
+        return b;
+    }
+
+    private static byte[] kabeh(List<Byte> l) {
+        byte[]b=new byte[3+(l.get(1)&0xFF)];
+        for(int x=0;x<3+(l.get(1)&0xFF);x++)b[x]=l.get(2);
+        return b;
+    }
+
+    private static byte[] sitok(List<Byte> l) {
+        return new byte[]{l.get(0)};
+    }
+
+    private static byte[] yo(List<Byte> l) {
+        byte[]b=new byte[l.size()];
+        for(int x=0;x<l.size();x++)b[x]=l.get(x);
         return b;
     }
 }

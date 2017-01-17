@@ -1,3 +1,3 @@
-@echo off
-cls
+#!/bin/bash
+clear
 mvn clean install exec:java

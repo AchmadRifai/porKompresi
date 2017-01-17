@@ -23,7 +23,7 @@ public class DataRL {
     }
 
     public boolean isPenuh(){
-        return 255==c;
+        return 258==c;
     }
 
     public byte getB() {
@@ -40,5 +40,9 @@ public class DataRL {
 
     public void setC(int c) {
         this.c = c;
+    }
+
+    public boolean oleh(){
+        return c>3;
     }
 }
