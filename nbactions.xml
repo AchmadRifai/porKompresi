@@ -16,4 +16,13 @@
                 <exec.executable>java</exec.executable>
             </properties>
         </action>
+        <action>
+            <actionName>CUSTOM-por</actionName>
+            <displayName>por</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>exec:java</goal>
+            </goals>
+        </action>
     </actions>

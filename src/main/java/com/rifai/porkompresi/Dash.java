@@ -6,8 +6,6 @@
 package com.rifai.porkompresi;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
@@ -38,8 +36,8 @@ public class Dash extends javax.swing.JFrame {
         jToolBar1 = new javax.swing.JToolBar();
         aj = new javax.swing.JButton();
         j = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lstne = new javax.swing.JDesktopPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblHistory = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Por Kompresi Dekompresi");
@@ -79,8 +77,30 @@ public class Dash extends javax.swing.JFrame {
         });
         jToolBar1.add(j);
 
-        lstne.setLayout(new java.awt.GridBagLayout());
-        jScrollPane1.setViewportView(lstne);
+        tblHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "File Asal", "File Tujuan", "Tanggal Kompresi", "Waktu Kompresi", "Efektifitas", "Telah Diproses"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblHistory);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,8 +109,10 @@ public class Dash extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE))
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -99,22 +121,19 @@ public class Dash extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        util.Work.f.delete();
+        //
     }//GEN-LAST:event_formWindowClosing
 
     private void jActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActionPerformed
-        for(java.awt.Component c:lstne.getAllFrames()){
-            InterJobs i=(InterJobs) c;
-            i.jalan();
-        }aj.setEnabled(false);
+        aj.setEnabled(false);
         j.setEnabled(false);
     }//GEN-LAST:event_jActionPerformed
 
@@ -124,30 +143,22 @@ public class Dash extends javax.swing.JFrame {
     }//GEN-LAST:event_ajActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        try {
-            if(!util.Work.f.exists())util.Work.initFile();
-            lstne.removeAll();
-            int x=0,y=0;
-            for(beans.Jobs j:util.Work.getJobs()){
-                java.awt.GridBagConstraints gbc=new java.awt.GridBagConstraints();
-                gbc.gridx=x;
-                gbc.gridy=y;
-                x++;
-                if(x>2){
-                    x=0;
-                    y++;
-                }lstne.add(new com.rifai.porkompresi.InterJobs(j), gbc);
-            }j.setEnabled(0<lstne.getAllFrames().length);
-        } catch (ParserConfigurationException | SAXException | IOException | TransformerException ex) {
-            Logger.getLogger(Dash.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        if(!util.Work.f.exists())try {
+            util.Work.initFile();
+        } catch (ParserConfigurationException | TransformerException ex) {
+            util.Work.hindar(ex);
+        }muat();
     }//GEN-LAST:event_formWindowOpened
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aj;
     private javax.swing.JButton j;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JDesktopPane lstne;
+    private javax.swing.JTable tblHistory;
     // End of variables declaration//GEN-END:variables
+
+    private void muat() {
+        java.util.List<beans.Jobs>l;
+    }
 }

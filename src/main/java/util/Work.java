@@ -7,8 +7,11 @@ package util;
 
 import beans.DataRL;
 import beans.Jobs;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
@@ -26,7 +29,13 @@ public class Work {
         org.w3c.dom.NodeList nl=d.getElementsByTagName("jobs");
         for(int x=0;x<nl.getLength();x++)if(nl.item(x).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
             org.w3c.dom.Element e=(org.w3c.dom.Element) nl.item(x);
-            l.add(new beans.Jobs(Integer.parseInt(e.getAttribute("mode")), e.getAttribute("asal"), e.getAttribute("ke")));
+            beans.Jobs j=new beans.Jobs(Integer.parseInt(e.getAttribute("mode")), e.getAttribute("asal"), e.getAttribute("ke"));
+            j.setEfek(Float.parseFloat(e.getAttribute("efek")));
+            j.setTerproses(Boolean.parseBoolean(e.getAttribute("terproses")));
+            j.setTgl(org.joda.time.DateTime.parse(e.getAttribute("tgl")));
+            if(!"null".equals(e.getAttribute("waktu")))j.setWaktu(org.joda.time.DateTime.parse(e.getAttribute("waktu")));
+            else j.setWaktu(null);
+            l.add(j);
         }return l;
     }
 
@@ -56,6 +65,10 @@ public class Work {
         e.setAttribute("mode", ""+j.getMode());
         e.setAttribute("asal", j.getAsal());
         e.setAttribute("ke", j.getKe());
+        e.setAttribute("efek", ""+j.getEfek());
+        e.setAttribute("terproses", ""+j.isTerproses());
+        e.setAttribute("tgl", ""+j.getTgl());
+        e.setAttribute("waktu", ""+j.getWaktu());
         root.appendChild(e);
         save(d);
     }
@@ -125,5 +138,20 @@ public class Work {
         byte[]b=new byte[l.size()];
         for(int x=0;x<l.size();x++)b[x]=l.get(x);
         return b;
+    }
+
+    public static void hindar(Exception ex) {
+        org.joda.time.DateTime d=org.joda.time.DateTime.now();
+        java.io.File f=new java.io.File(System.getProperty("user.home")+"/.pze/error/"+d.getYear()+"a"+d.getMonthOfYear()+"a"+d.getDayOfMonth()+
+                "b"+d.getHourOfDay()+"a"+d.getMinuteOfHour()+"a"+d.getSecondOfMinute()+"b"+d.getMillisOfSecond()+".log");
+        if(!f.getParentFile().exists())f.getParentFile().mkdirs();
+        if(f.exists())f.delete();
+        try {
+            java.io.PrintStream o=new java.io.PrintStream(f);
+            ex.printStackTrace(o);
+            o.close();
+        } catch (FileNotFoundException ex1) {
+            Logger.getLogger(Work.class.getName()).log(Level.SEVERE, null, ex1);
+        }
     }
 }
