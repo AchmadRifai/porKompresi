@@ -24,7 +24,7 @@ import util.Data;
 public class Jobs extends javax.swing.JInternalFrame {
 private beans.Jobs j;
 private Thread t;
-private org.joda.time.DateTime awal,akhir;
+private java.time.LocalTime awal,akhir;
     /**
      * Creates new form Jobs
      */
@@ -222,11 +222,12 @@ private org.joda.time.DateTime awal,akhir;
     }
 
     private void laksana() throws IOException {
-        awal=org.joda.time.DateTime.now();
+        awal=java.time.LocalTime.now();
         if(beans.Jobs.KOMPRES==j.getMode())kompres();
         else dekompres();
-        akhir=org.joda.time.DateTime.now();
-        j.setDurasi(akhir.minus(awal.getMillis()));
+        akhir=java.time.LocalTime.now();
+        j.setDurasi(akhir.minusHours(awal.getHour()).minusMinutes(awal.getMinute()).minusSeconds(awal.getSecond())
+        .minusNanos(awal.getNano()));
         new Thread(() -> {
             try {
                 out();
@@ -317,7 +318,7 @@ private org.joda.time.DateTime awal,akhir;
                 t=getTextSex(x);
                 x++;
                 y=0;
-            }t.setText(t.getText()+b+" ");
+            } t.setText(t.getText()+Integer.toHexString(b)+" ");
             y++;
         }
     }

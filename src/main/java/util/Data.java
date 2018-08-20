@@ -55,7 +55,7 @@ public class Data {
         for(int x=0;x<nl.getLength();x++)if(nl.item(x).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
             org.w3c.dom.Element e=(org.w3c.dom.Element) nl.item(x);
             beans.Jobs j=new beans.Jobs(Integer.parseInt(e.getAttribute("mode")), e.getAttribute("asal"), e.getAttribute("ke"));
-            j.setDurasi(org.joda.time.DateTime.parse(e.getAttribute("durasi")));
+            j.setDurasi(java.time.LocalTime.parse(e.getAttribute("durasi")));
             j.setTgl(org.joda.time.DateTime.parse(e.getAttribute("tgl")));
             j.setRasio(Float.parseFloat(e.getAttribute("rasio")));
             l.add(j);

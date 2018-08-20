@@ -15,7 +15,8 @@ public class Jobs {
 
     private int mode;
     private String asal,ke;
-    private org.joda.time.DateTime tgl,durasi;
+    private org.joda.time.DateTime tgl;
+    private java.time.LocalTime durasi;
     private float rasio;
 
     public Jobs(int mode, String asal) {
@@ -24,7 +25,7 @@ public class Jobs {
         if(mode==Jobs.KOMPRES)ke=asal+".pz";
         else ke=asal.substring(0, asal.length()-3);
         tgl=org.joda.time.DateTime.now();
-        durasi=org.joda.time.DateTime.now();
+        durasi=java.time.LocalTime.of(0, 0, 0, 0);
         rasio=0;
     }
 
@@ -33,7 +34,7 @@ public class Jobs {
         this.asal = asal;
         this.ke = ke;
         tgl=org.joda.time.DateTime.now();
-        durasi=org.joda.time.DateTime.now();
+        durasi=java.time.LocalTime.of(0, 0, 0, 0);
         rasio=0;
     }
 
@@ -74,11 +75,11 @@ public class Jobs {
         this.tgl = tgl;
     }
 
-    public org.joda.time.DateTime getDurasi() {
+    public java.time.LocalTime getDurasi() {
         return durasi;
     }
 
-    public void setDurasi(org.joda.time.DateTime durasi) {
+    public void setDurasi(java.time.LocalTime durasi) {
         this.durasi = durasi;
     }
 
