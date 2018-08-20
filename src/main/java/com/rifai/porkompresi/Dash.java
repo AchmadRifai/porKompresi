@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
+import util.Work;
 
 /**
  *
@@ -44,16 +45,17 @@ public class Dash extends javax.swing.JFrame {
         setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
         jToolBar1.setRollover(true);
 
+        aj.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eUsjmVRJ.jpg"))); // NOI18N
         aj.setText("Add Jobs");
         aj.setFocusable(false);
         aj.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -109,10 +111,8 @@ public class Dash extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 674, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -121,25 +121,24 @@ public class Dash extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        //
+        //Work.f.delete();
     }//GEN-LAST:event_formWindowClosing
 
     private void jActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActionPerformed
+        new Thread(this::runProses).start();
         aj.setEnabled(false);
         j.setEnabled(false);
     }//GEN-LAST:event_jActionPerformed
 
     private void ajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ajActionPerformed
-        new com.rifai.porkompresi.AddJobs(this, true).setVisible(true);
-        this.formWindowOpened(null);
+        addJobs();
     }//GEN-LAST:event_ajActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -159,6 +158,32 @@ public class Dash extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void muat() {
-        java.util.List<beans.Jobs>l;
+        try {
+            java.util.List<beans.Jobs>l=Work.getJobs();
+            javax.swing.table.DefaultTableModel m=(javax.swing.table.DefaultTableModel) tblHistory.getModel();
+            for(int x=m.getRowCount()-1;x>=0;x--)m.removeRow(x);
+            boolean b=false;
+            for(beans.Jobs j:l){
+                m.addRow(new Object[]{j.getAsal(),j.getKe(),j.getTgl(),j.getWaktu(),j.getEfek(),j.isTerproses()});
+                b=b||!j.isTerproses();
+            }j.setEnabled(b);
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Work.hindar(ex);
+        }
+    }
+
+    private void addJobs() {
+        com.rifai.porkompresi.AddJobs a=new com.rifai.porkompresi.AddJobs(this, true);
+        a.setVisible(true);
+        while(a.isVisible()){}
+        this.formWindowOpened(null);
+    }
+
+    private void runProses() {
+        try {
+            java.util.List<beans.Jobs>l=Work.getJobs();
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Work.hindar(ex);
+        }
     }
 }

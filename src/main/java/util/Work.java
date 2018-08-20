@@ -7,6 +7,7 @@ package util;
 
 import beans.DataRL;
 import beans.Jobs;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
@@ -21,7 +22,7 @@ import org.xml.sax.SAXException;
  * @author ai
  */
 public class Work {
-    public static java.io.File f=new java.io.File(System.getProperty("user.home")+"/.pze/runlist");
+    public static File f=new File(System.getProperty("user.home")+"/.pze/runlist");
 
     public static List<Jobs> getJobs() throws ParserConfigurationException, SAXException, IOException {
         List<Jobs>l=new java.util.LinkedList<Jobs>();
@@ -153,5 +154,17 @@ public class Work {
         } catch (FileNotFoundException ex1) {
             Logger.getLogger(Work.class.getName()).log(Level.SEVERE, null, ex1);
         }
+    }
+
+    public static void removeAll() {
+        File d=f.getParentFile();
+        delDir(d);
+    }
+
+    private static void delDir(File d) {
+        for(File fi:d.listFiles()){
+            if(fi.isDirectory())delDir(fi);
+            else fi.delete();
+        }d.delete();
     }
 }
