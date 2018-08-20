@@ -5,8 +5,6 @@
  */
 package beans;
 
-import org.joda.time.DateTime;
-
 /**
  *
  * @author ai
@@ -17,70 +15,18 @@ public class Jobs {
 
     private int mode;
     private String asal,ke;
-    private org.joda.time.DateTime tgl,waktu;
-    private float efek;
-    private boolean terproses;
-
-    public DateTime getTgl() {
-        return tgl;
-    }
-
-    public void setTgl(DateTime tgl) {
-        this.tgl = tgl;
-    }
-
-    public DateTime getWaktu() {
-        return waktu;
-    }
-
-    public void setWaktu(DateTime waktu) {
-        this.waktu = waktu;
-    }
-
-    public float getEfek() {
-        return efek;
-    }
-
-    public void setEfek(float efek) {
-        this.efek = efek;
-    }
-
-    public boolean isTerproses() {
-        return terproses;
-    }
-
-    public void setTerproses(boolean terproses) {
-        this.terproses = terproses;
-    }
-
-    public void cek(){
-        if(terproses){
-            org.joda.time.DateTime d=org.joda.time.DateTime.now();
-            waktu=d.minus(tgl.getSecondOfDay());
-            java.io.File f1=new java.io.File(asal),f2=new java.io.File(ke);
-            efek=100*f1.length()/f2.length();
-        }
-    }
 
     public Jobs(int mode, String asal) {
         this.mode = mode;
         this.asal = asal;
         if(mode==Jobs.KOMPRES)ke=asal+".pz";
         else ke=asal.substring(0, asal.length()-3);
-        terproses=false;
-        efek=0;
-        tgl=org.joda.time.DateTime.now();
-        waktu=null;
     }
 
     public Jobs(int mode, String asal, String ke) {
         this.mode = mode;
         this.asal = asal;
         this.ke = ke;
-        terproses=false;
-        efek=0;
-        tgl=org.joda.time.DateTime.now();
-        waktu=null;
     }
 
     public boolean oleh(){
