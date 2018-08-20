@@ -26,7 +26,11 @@ public class Work {
         org.w3c.dom.NodeList nl=d.getElementsByTagName("jobs");
         for(int x=0;x<nl.getLength();x++)if(nl.item(x).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
             org.w3c.dom.Element e=(org.w3c.dom.Element) nl.item(x);
-            l.add(new beans.Jobs(Integer.parseInt(e.getAttribute("mode")), e.getAttribute("asal"), e.getAttribute("ke")));
+            beans.Jobs j=new beans.Jobs(Integer.parseInt(e.getAttribute("mode")), e.getAttribute("asal"), e.getAttribute("ke"));
+            j.setDurasi(org.joda.time.DateTime.parse(e.getAttribute("durasi")));
+            j.setTgl(org.joda.time.DateTime.parse(e.getAttribute("tgl")));
+            j.setRasio(Float.parseFloat(e.getAttribute("rasio")));
+            l.add(j);
         }return l;
     }
 
@@ -63,6 +67,9 @@ public class Work {
         e.setAttribute("mode", ""+j.getMode());
         e.setAttribute("asal", j.getAsal());
         e.setAttribute("ke", j.getKe());
+        e.setAttribute("rasio", ""+j.getRasio());
+        e.setAttribute("tgl", ""+j.getTgl());
+        e.setAttribute("durasi", ""+j.getDurasi());
         root.appendChild(e);
         save(d);
     }

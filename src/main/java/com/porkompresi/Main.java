@@ -5,9 +5,7 @@
  */
 package com.porkompresi;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.UnsupportedLookAndFeelException;
+import ui.Splash;
 
 /**
  *
@@ -20,9 +18,14 @@ public class Main {
      */
     public static void main(String[] args) {
         try {
-            javax.swing.UIManager.setLookAndFeel(new com.seaglasslookandfeel.SeaGlassLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Splash.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

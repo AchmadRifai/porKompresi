@@ -12,6 +12,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
+import util.Data;
 
 /**
  *
@@ -20,6 +24,7 @@ import javax.swing.JTextArea;
 public class Jobs extends javax.swing.JInternalFrame {
 private beans.Jobs j;
 private Thread t;
+private org.joda.time.DateTime awal,akhir;
     /**
      * Creates new form Jobs
      */
@@ -219,19 +224,26 @@ private Thread t;
     }
 
     private void laksana() throws IOException {
+        awal=org.joda.time.DateTime.now();
         if(beans.Jobs.KOMPRES==j.getMode())kompres();
         else dekompres();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    out();
-                } catch (IOException ex) {
-                    Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        akhir=org.joda.time.DateTime.now();
+        j.setDurasi(akhir.minus(awal.getMillis()));
+        new Thread(() -> {
+            try {
+                out();
+            } catch (IOException ex) {
+                Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
-        javax.swing.JOptionPane.showMessageDialog(rootPane, title+" berhasil");
+        java.io.File f1=new java.io.File(asal.getText()),f2=new java.io.File(ke.getText());
+        j.setRasio(100*(f1.length()/f2.length()));
+    try {
+        if(!Data.f.exists())Data.init();
+        Data.save(j);
+    } catch (ParserConfigurationException | TransformerException | SAXException ex) {
+        Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
+    } javax.swing.JOptionPane.showMessageDialog(rootPane, title+" berhasil");
     }
 
 @SuppressWarnings("UnnecessaryContinue")

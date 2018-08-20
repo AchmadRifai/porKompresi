@@ -15,18 +15,26 @@ public class Jobs {
 
     private int mode;
     private String asal,ke;
+    private org.joda.time.DateTime tgl,durasi;
+    private float rasio;
 
     public Jobs(int mode, String asal) {
         this.mode = mode;
         this.asal = asal;
         if(mode==Jobs.KOMPRES)ke=asal+".pz";
         else ke=asal.substring(0, asal.length()-3);
+        tgl=org.joda.time.DateTime.now();
+        durasi=org.joda.time.DateTime.now();
+        rasio=0;
     }
 
     public Jobs(int mode, String asal, String ke) {
         this.mode = mode;
         this.asal = asal;
         this.ke = ke;
+        tgl=org.joda.time.DateTime.now();
+        durasi=org.joda.time.DateTime.now();
+        rasio=0;
     }
 
     public boolean oleh(){
@@ -56,5 +64,29 @@ public class Jobs {
 
     public void setKe(String ke) {
         this.ke = ke;
+    }
+
+    public org.joda.time.DateTime getTgl() {
+        return tgl;
+    }
+
+    public void setTgl(org.joda.time.DateTime tgl) {
+        this.tgl = tgl;
+    }
+
+    public org.joda.time.DateTime getDurasi() {
+        return durasi;
+    }
+
+    public void setDurasi(org.joda.time.DateTime durasi) {
+        this.durasi = durasi;
+    }
+
+    public float getRasio() {
+        return rasio;
+    }
+
+    public void setRasio(float rasio) {
+        this.rasio = rasio;
     }
 }
