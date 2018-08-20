@@ -74,7 +74,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="???"/>
+        <Property name="text" type="java.lang.String" value="Berkas Asal"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="buka">
@@ -87,7 +87,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="???"/>
+        <Property name="text" type="java.lang.String" value="Berkas Hasil"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="mode">

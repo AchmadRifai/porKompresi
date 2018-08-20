@@ -142,8 +142,6 @@ private org.joda.time.DateTime awal,akhir;
 @SuppressWarnings("CallToThreadStopSuspendOrResumeManager")
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         if(t!=null)t.stop();
-        java.io.File f=new java.io.File(ke.getText());
-        if(f.exists())f.delete();
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void asalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asalActionPerformed
@@ -236,8 +234,7 @@ private org.joda.time.DateTime awal,akhir;
                 Logger.getLogger(Jobs.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
-        java.io.File f1=new java.io.File(asal.getText()),f2=new java.io.File(ke.getText());
-        j.setRasio(100*(f1.length()/f2.length()));
+        rasione();
     try {
         if(!Data.f.exists())Data.init();
         Data.save(j);
@@ -355,5 +352,15 @@ private org.joda.time.DateTime awal,akhir;
         scrl.setViewportView(t);
         out.add(""+x, scrl);
         return t;
+    }
+
+    private void rasione() {
+        if(j.getMode()==beans.Jobs.KOMPRES){
+            java.io.File f1=new java.io.File(asal.getText()),f2=new java.io.File(ke.getText());
+            j.setRasio(100*f1.length()/f2.length());
+        }else{
+            java.io.File f1=new java.io.File(asal.getText()),f2=new java.io.File(ke.getText());
+            j.setRasio(100*f2.length()/f1.length());
+        }
     }
 }

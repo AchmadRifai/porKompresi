@@ -7,6 +7,7 @@ package util;
 
 import beans.Jobs;
 import java.io.IOException;
+import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
@@ -45,5 +46,19 @@ public class Data {
         e.setAttribute("durasi", ""+j.getDurasi());
         root.appendChild(e);
         save(d);
+    }
+
+    public static List<Jobs> load() throws ParserConfigurationException, SAXException, IOException {
+        List<Jobs>l=new java.util.LinkedList<Jobs>();
+        org.w3c.dom.Document d=javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
+        org.w3c.dom.NodeList nl=d.getElementsByTagName("jobs");
+        for(int x=0;x<nl.getLength();x++)if(nl.item(x).getNodeType()==org.w3c.dom.Node.ELEMENT_NODE){
+            org.w3c.dom.Element e=(org.w3c.dom.Element) nl.item(x);
+            beans.Jobs j=new beans.Jobs(Integer.parseInt(e.getAttribute("mode")), e.getAttribute("asal"), e.getAttribute("ke"));
+            j.setDurasi(org.joda.time.DateTime.parse(e.getAttribute("durasi")));
+            j.setTgl(org.joda.time.DateTime.parse(e.getAttribute("tgl")));
+            j.setRasio(Float.parseFloat(e.getAttribute("rasio")));
+            l.add(j);
+        }return l;
     }
 }

@@ -49,7 +49,7 @@ public class AddJobs extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("???");
+        jLabel1.setText("Berkas Asal");
 
         buka.setText("BUKA");
         buka.addActionListener(new java.awt.event.ActionListener() {
@@ -58,7 +58,7 @@ public class AddJobs extends javax.swing.JDialog {
             }
         });
 
-        jLabel2.setText("???");
+        jLabel2.setText("Berkas Hasil");
 
         mode.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "kompres", "dekompres" }));
 
@@ -148,7 +148,7 @@ public class AddJobs extends javax.swing.JDialog {
 
     private void sActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sActionPerformed
         beans.Jobs j;
-        if(!"???".equals(jLabel2.getText()))j=new beans.Jobs(mode(), jLabel1.getText(), jLabel2.getText());
+        if(!"Berkas Hasil".equals(jLabel2.getText()))j=new beans.Jobs(mode(), jLabel1.getText(), jLabel2.getText());
         else j=new beans.Jobs(mode(), jLabel1.getText());
         if(j.oleh())try {
             util.Work.addJobs(j);
