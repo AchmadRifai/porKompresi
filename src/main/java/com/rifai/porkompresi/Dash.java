@@ -5,7 +5,9 @@
  */
 package com.rifai.porkompresi;
 
+import beans.Jobs;
 import java.io.IOException;
+import java.nio.file.Files;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
@@ -16,7 +18,7 @@ import util.Work;
  * @author ai
  */
 public class Dash extends javax.swing.JFrame {
-
+private java.util.concurrent.ThreadPoolExecutor exe;
     /**
      * Creates new form Dash
      */
@@ -167,6 +169,7 @@ public class Dash extends javax.swing.JFrame {
                 m.addRow(new Object[]{j.getAsal(),j.getKe(),j.getTgl(),j.getWaktu(),j.getEfek(),j.isTerproses()});
                 b=b||!j.isTerproses();
             }j.setEnabled(b);
+            exe=new java.util.concurrent.ScheduledThreadPoolExecutor(l.size());
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Work.hindar(ex);
         }
@@ -182,8 +185,33 @@ public class Dash extends javax.swing.JFrame {
     private void runProses() {
         try {
             java.util.List<beans.Jobs>l=Work.getJobs();
+            l.forEach((j)->{
+                if(j.oleh())exe.execute(()->{
+                    if(1==j.getMode())mlaku(j);
+                });
+            });while(exe.getActiveCount()>0){}
+            aj.setEnabled(true);
+            muat();
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Work.hindar(ex);
         }
+    }
+
+    private void mlaku(Jobs j) {
+    try {
+        java.io.File asal=new java.io.File(j.getAsal()),ke=new java.io.File(j.getKe());
+        if(ke.exists())ke.delete();
+        java.util.List<Byte>lb=new java.util.LinkedList<>();
+        for(byte b:Files.readAllBytes(asal.toPath())){
+            if(!lb.isEmpty()){
+                if(b!=lb.get(lb.size()-1)||200==lb.size()){
+                    Work.compres(lb, j.getKe());
+                    lb.clear();
+                }
+            }lb.add(b);
+        } Work.Decompres(lb, j.getKe());
+    } catch (IOException ex) {
+        Work.hindar(ex);
+    }
     }
 }

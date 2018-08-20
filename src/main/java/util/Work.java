@@ -167,4 +167,23 @@ public class Work {
             else fi.delete();
         }d.delete();
     }
+
+    public static void compres(List<Byte> lb, String ke) throws IOException {
+        java.io.File f=new java.io.File(ke);
+        java.io.FileOutputStream o=new java.io.FileOutputStream(f,f.exists());
+        beans.DataRL d=new beans.DataRL(lb.get(0));
+        d.setC(lb.size());
+        byte[]b=convertData(d);
+        o.write(b);
+        o.close();
+    }
+
+    private static byte[] convertData(DataRL d) {
+        byte[]b=new byte[4];
+        b[0]=0x00;
+        b[1]=d.getB();
+        b[2]=(byte) d.getC();
+        b[3]=0x00;
+        return b;
+    }
 }
